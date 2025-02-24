@@ -1,0 +1,248 @@
+/* ============================================================
+   Global Settings & Variables
+   ============================================================ */
+
+/* (Optionally define CSS variables here for common values)
+:root {
+  --font-family: Arial, sans-serif;
+  --primary-border-color: #ccc;
+  --secondary-border-color: #ddd;
+  --accent-border-color: #333;
+  --background-light: #fff;
+  --text-color: #000;
+}
+*/
+
+/* ============================================================
+   Layout & Container Styles
+   ============================================================ */
+
+   .chat-room {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+  }
+  
+  .chat-interface {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+  }
+  
+  /* Containers for messages */
+  .messages-container,
+  .message-list-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow-y: hidden;
+    padding: 1rem;
+    box-sizing: border-box;
+  }
+  
+  .messages {
+    flex: 1;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    padding: 1rem;
+    box-sizing: border-box;
+    padding-bottom: 5rem; /* Ensure last message is not hidden */
+  }
+  
+  /* Chat input container */
+  .chat-input {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    width: 100%;
+    padding: 0.5rem;
+    box-sizing: border-box;
+    background-color: #fff;
+    border-top: 1px solid #ccc;
+    max-height: 50vh;
+  }
+  
+  /* Chat input textarea & button */
+  .chat-input textarea {
+    flex: 1;
+    resize: none;
+    box-sizing: border-box;
+    font-size: 1rem;
+    min-height: 40px;
+  }
+  
+  .chat-input button {
+    margin-left: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  
+  /* ============================================================
+     Message Styles
+     ============================================================ */
+  
+  .message {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .agent-name {
+    margin-right: 1rem;
+    font-weight: bold;
+  }
+
+  .agent-icon {
+    transform: scale(2);
+    display: inline-block;
+    margin: 0 auto; /* Automatically center horizontally */
+  }
+  
+  .message-content {
+    flex: 1;
+  }
+
+
+  
+ 
+  /* Highlight questions with a stronger border */
+  .message.question {
+    border: 2px solid #333;
+  }
+  
+  /* Additional utility class for spacing */
+  .agent-rationale-line {
+    margin-left: 5px;
+  }
+  
+  /* ============================================================
+     Collapsible & Section Styles (e.g., Manage Sections)
+     ============================================================ */
+  
+  /* Container for each collapsible section */
+  .collapsible-section {
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Header containing the toggle icon and label */
+  .collapsible-header {
+    display: flex;
+    align-items: center;
+  }
+  
+  /* Section label and subtitle (Manage Sections styling) */
+  .collapsible-label {
+    font-weight: bold;
+    font-size: 0.9em; /* Adjust to a smaller size if needed */
+  }
+  
+  .collapsible-sublabel {
+    margin-left: 8px;
+    font-size: 0.9em;
+    color: #666;
+  }
+  
+  /* Content area inside collapsible sections */
+  .collapsible-content {
+    margin-top: 0.5rem;
+    padding-left: 1.5rem;
+    width: calc(100vw - 520px);
+  }
+  
+  /* ============================================================
+     Message Rationale Line Styles
+     ============================================================ */
+
+
+  .rationale-line {
+    margin-bottom: 0.5rem;
+  }
+  
+  .rationale-line-header {
+    display: flex;
+    align-items: center;
+  }
+  
+  /* Toggle buttons for rationale lines */
+  .rationale-toggle-button,
+  .rationale-toggle-button-collapse,
+  .rationale-toggle-button-expand {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 0;
+    margin-right: 0.5rem;
+  }
+  
+  /* Label for rationale lines */
+  .rationale-line-label {
+    font-weight: bold;
+    font-size: 0.9em;
+  }
+  
+  .rationale-line-content {
+    margin-top: 0.5rem;
+    padding-left: 1.5rem;
+  }
+  
+
+  .rationale-section {
+    font-size: 12px;
+  }
+  /* ============================================================
+     Markdown Rationale Styles
+     ============================================================ */
+  
+  .markdown-rationale-think {
+    font-size: 12px;
+    margin-left: 10px;
+  }
+  
+  .markdown-rationale-think code {
+    background-color: #f9f2f4;
+  }
+  
+  /* ============================================================
+     Toggle Icon Sizing
+     ============================================================ */
+  
+  .toggle-button svg,
+  .rationale-toggle-button svg,
+  .rationale-toggle-button-collapse svg,
+  .rationale-toggle-button-expand svg {
+    width: 10px;
+    height: 10px;
+  }
+  
+ 
+  .chat-termination-section,
+  .agent-selection-section,
+  .agent-processing-section {
+    background-color: aliceblue;
+  }
+
+ 
+
+  .select-message-selection-group,
+  .select-agent-group,
+  .select-message-terminate-group {
+    background-color: rgb(231, 240, 233);
+  }
+ 
+  .thinking-label,
+  .results-label,
+  .llm-output-label, 
+  .prompt-label {
+    background-color: rgb(240, 240, 231);
+  }

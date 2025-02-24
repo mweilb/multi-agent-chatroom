@@ -1,0 +1,30 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "build-api",
+        "command": "dotnet",
+        "type": "process",
+        "args": [
+          "build",
+          "${workspaceFolder}/api/api.csproj"
+        ],
+        "problemMatcher": "$msCompile"
+      },
+      {
+        "label": "Start React development server",
+        "type": "shell",
+        "command": "npm",
+        "options": {
+          "cwd": "${workspaceFolder}/client"
+        },
+        "args": [ "start" ],
+        "runOptions": {
+            "runOn": "folderOpen"
+        },
+        "problemMatcher": []
+    }
+       
+    ]
+  }
+  
