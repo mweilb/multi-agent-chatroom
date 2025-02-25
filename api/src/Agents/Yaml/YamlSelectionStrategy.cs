@@ -74,14 +74,17 @@ namespace api.Agents.Yaml
                 Agent Selection Criteria:
                 {selectionCriteriaPromptInternal}
 
+                The valid agents are:
+                {string.Join(", ", agents.Select(a => a.Name))}
+
                 Based on the above, please return a JSON object with two properties:
                 - ""rationale"": An explanation of your decision.
                 - ""nextAgent"": The name of the agent to respond next.
 
                 Example Output:
                 {{
-                    ""rationale"": ""The last message was from User, so according to the rules, the next agent should be CopyWriter."",
-                    ""nextAgent"": ""CopyWriter""
+                    ""rationale"": ""Your reasoning why you selected this agent."",
+                    ""nextAgent"": ""{agents[0].Name}""
                 }}
 
                 Return only the JSON response without any additional commentary.

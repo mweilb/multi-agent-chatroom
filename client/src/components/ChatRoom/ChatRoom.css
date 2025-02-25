@@ -246,3 +246,9 @@
   .prompt-label {
     background-color: rgb(240, 240, 231);
   }
+
+  .mermaid {
+    width: 50%; /* Adjust as needed */
+    height: auto; /* Adjust as needed */
+    overflow: auto;
+  }
