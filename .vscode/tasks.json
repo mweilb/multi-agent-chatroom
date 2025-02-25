@@ -16,7 +16,10 @@
         "type": "shell",
         "command": "npm",
         "options": {
-          "cwd": "${workspaceFolder}/client"
+          "cwd": "${workspaceFolder}/client",
+          "env": {
+            "BROWSER": "none"
+          }
         },
         "args": [ "start" ],
         "runOptions": {
