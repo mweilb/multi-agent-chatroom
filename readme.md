@@ -39,6 +39,8 @@ Here are some screenshots showcasing different aspects of the prototype:
 - the art director response, but also the evulation of the termination decision making on the copywrite
 
 <img src="media/ArtDirector.png" alt="CopyWriter GIF" style="width:60%">
- 
+
+- Can you do the diagraming with Mermaid
+<img src="media/Mermaid.png" alt="CopyWriter GIF" style="width:60%">
 
 
