@@ -2,6 +2,15 @@
     "version": "2.0.0",
     "tasks": [
       {
+        "label": "Init Client",
+        "type": "shell",
+        "command": "npm install",
+        "options": {
+          "cwd": "${workspaceFolder}/client"
+        },
+        "problemMatcher": []
+      },
+      {
         "label": "build-api",
         "command": "dotnet",
         "type": "process",
@@ -25,6 +34,8 @@
         "runOptions": {
             "runOn": "folderOpen"
         },
+        "dependsOn": ["Init Client"],
+         
         "problemMatcher": []
     }
        
