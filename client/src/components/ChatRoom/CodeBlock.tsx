@@ -10,10 +10,22 @@ interface CodeProps {
 }
 
 // Function to fix the graph syntax
-const fixGraphSyntax = (graph: string): string => {
-  // Replace occurrences of '[]' containing '()' with '[]' containing '-'
-  return graph.replace(/\[\(.*?\)\]/g, '[-]');
-};
+function fixParenthesesInLabels(graph: string): string {
+  return graph.replace(/\[([^\]]+)\]/g, (match, labelContent) => {
+    // Replace each occurrence of a parentheses group (including the parentheses) with a dash.
+    // Then replace any multiple dashes with a single dash.
+    const replaced = labelContent.replace(/\([^)]*\)/g, '-').replace(/-+/g, '-').trim();
+    return `[${replaced}]`;
+  });
+}
+
+function fixMissingBracket(input: string): string {
+  // Use \S+ to match any non-whitespace sequence as the node id,
+  // then one or more whitespace characters, then capture everything until the arrow (excluding '[').
+  return input.replace(/(\S+)\s+([^[]+?)\s*-->/g, (_, nodeId, label) => {
+    return `${nodeId}[${label.trim()}] -->`;
+  });
+}
 
 export const CodeBlock: React.FC<CodeProps> = ({ inline, className, children, ...props }) => {
   const [isDiagramVisible, setIsDiagramVisible] = useState(false);
@@ -27,7 +39,8 @@ export const CodeBlock: React.FC<CodeProps> = ({ inline, className, children, ..
   // Render Mermaid diagrams if language is "mermaid"
   if (!inline && match && match[1] === 'mermaid') {
     
-    var processedChildren = fixGraphSyntax(String(children)); 
+    var processedChildren = fixParenthesesInLabels(String(children)); 
+   // processedChildren = fixMissingBracket(processedChildren);
     return (
       <div>
         <button onClick={toggleView} style={{ marginBottom: '10px' }}>
