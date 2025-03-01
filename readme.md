@@ -1,58 +1,69 @@
-# Introduction to the System
 
-## Overview
-This prototype is designed for handling agent-based interactions in a conversational environment, integrating multiple AI agents to respond to user queries, perform tasks, and interact with other agents. The system leverages **Ollama**, **Azure Cognitive Search**, and **Azure OpenAI** services to provide intelligent responses, while YAML-based agent configurations guide how agents respond.
+# Overview
+This prototype handles agent-based interactions in a conversational environment by integrating multiple AI agents. These agents work together to respond to user queries, execute tasks, and interact with one another.  
 
-[Deeper on Agents and Orchestrators](./media/coreConcepts.md)
+For more details on Semantic Kernel, Agents, and Orchestrators, please see the [Deeper on Semantic Kernel, Agents and Orchestrators](./thinking/overall.md) document.
+
+## Core Features 
+
+- **Multi-Agent Chat Room:** ✅ 
+  A flexible chat environment where various agents interact with each other and the user. The system provides clear visibility into ongoing processes, enabling rapid iteration and efficient learning. It is designed not as a final product interface, but as a tool for those creating the experience
+
+  <img src="media/action.gif" alt="Demo GIF" style="width:40%">
+
+- **YAML Configuration:**  
+  Each chat room is defined via a YAML configuration that specifies agent roles, instructions, selection criteria, termination conditions, and more.
+    - **[Yaml Overview ✅](./thinking/yaml.md):** 
+-   - **[Yaml Samples ✅](./thinking/yaml.md#samples):** 
+- **Flexible Orchestration:**  
+  Supports multiple orchestration strategies to manage how agents interact. In our prototype, we’ve implemented custom orchestrations that include:
+  - **[Agent Chat Orchestration (Sequential Flow) ✅](./thinking/overall.md#agent-chat-orchestration):**  
+    The orchestrator sequentially triggers agents one after the other, evaluating each output before moving on. This approach is ideal for iterative refinement.
+  - **[Parallel Orchestration (🚧)](./thinking/overall.md#parallel-orchestration):**  
+    Multiple agents are activated concurrently, with their responses aggregated by the orchestrator. This reduces latency and offers redundancy.
+  - **[Collaboration Orchestration (🚧)](./thinking/overall.md#collaboration-orchestration):**  
+    A hybrid strategy where a primary orchestrator handles structured inputs and a secondary orchestrator provides asynchronous, creative feedback.
+  - **[Hierarchical Orchestrator-to-Orchestrator (🚧)](./thinking/overall.md#hierarchical-orchestrator-to-orchestrator):**  
+    A layered approach in which a primary orchestrator delegates tasks to subordinate orchestrators, each managing a group of specialized agents. Their aggregated outputs are then combined into a final response.
+
+- **Service Integration:**  
+  Easily switch between Ollama, Azure, or OpenAI, adapting to different deployment environments.
+
  
-## Core Features
-- **Multi-Agent Chat Room**: A flexible chat room where different agents communicate with each other and the user.
-- **Selection Strategy**: Determines which agent should respond next based on the conversation history and context.
-- **Termination Strategy**: Controls when to stop the conversation based on a true/false question or predefined conditions.
-- **YAML Configuration**: Each agent is defined using a YAML configuration, which includes instructions, selection criteria, termination conditions, and more.
-
-## Technologies Used
-1. **Ollama**: Local AI server for chat and text generation.
-2. **Azure Cognitive Search**: Used for vector-based document search and semantic search capabilities.
-3. **Azure OpenAI**: Provides AI-driven responses via GPT models for various tasks.
-4. **YAML**: Used to configure agent instructions, selection criteria, and termination conditions.
 
 
 
 ## Local Run Instructions
-For detailed steps on running the system locally, please refer to the respective guides for your operating system:
-
+Refer to the guides for your operating system:
 - **Windows**: [Local Run - winOS.md](./winOS.md)
 - **macOS**: [Local Run - macOs.md](./macOs.md)
 
-## For a Quick Overview, Check Out the Demo in Action
-The demo uses DeepSeek locally. The video is in realtime and includes a slight pause at the beginning (to accommodate real-time processing).
+## Demo Overview
+For a quick look at the system in action, check out the demo using DeepSeek locally. The demo video includes a brief initial pause to accommodate real-time processing.
 
 <img src="media/action.gif" alt="Demo GIF" style="width:80%">
 
 ## Screenshots
-Here are some screenshots showcasing different aspects of the prototype:
+Here are some screenshots that showcase various aspects of the prototype:
 
-- **YAML Setup**:  
-  You can set up the system in code or use the YAML format.  
+- **YAML Setup**  
+  Configure the system using code or YAML.  
   <img src="media/Yml.png" alt="Yaml Format" style="width:60%">
 
-- **Copywriter Interface**:  
-  The Copywriter shows a history being filtered down so that the language model focuses on a smaller amount of content.  
+- **Copywriter Interface**  
+  This interface filters the chat history so that the language model focuses on a smaller subset of content.  
   <img src="media/CopyWriter.png" alt="Copywriter Interface" style="width:60%">
 
-- **Art Director Thinking**:  
-  An image depicting the Art Director contemplating their next move.  
+- **Art Director Thinking**  
+  A visual depiction of the Art Director formulating the next steps.  
   <img src="media/ArtDirector-Thinking.png" alt="Art Director Thinking" style="width:60%">
 
-- **Art Director Response**:  
-  The Art Director's response along with an evaluation of the termination decision-making on the copy.  
+- **Art Director Response**  
+  The Art Director’s response, including an evaluation of the termination decision-making process.  
   <img src="media/ArtDirector.png" alt="Art Director Response" style="width:60%">
 
-- **Diagram with Mermaid**:  
-  The system diagram created using Mermaid.  
+- **System Diagram with Mermaid**  
+  An architectural diagram of the system, generated using Mermaid.  
   <img src="media/Mermaid.png" alt="Mermaid Diagram" style="width:60%">
-
-
 
  
