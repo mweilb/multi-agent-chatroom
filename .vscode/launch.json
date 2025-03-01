@@ -16,19 +16,36 @@
         } 
       },
       {
-        "name": "Launch Web for React",
+        "name": "Edge Launch Web for React",
         "type": "msedge",
         "request": "launch",
         "url": "http://localhost:3000",
         "webRoot": "${workspaceFolder}/client/src",
-        "userDataDir": true
+        "userDataDir": true,
+        
+      },
+      {
+        "name": "Chrome Launch Web for React",
+        "type": "chrome",
+        "request": "launch",
+        "url": "http://localhost:3000",
+        "webRoot": "${workspaceFolder}/client/src",
+        "userDataDir": true,
+        
       }
     ],
     "compounds": [
       {
-        "name": "Start API and Client",
+        "name": "Edge - Start API and Client",
         "configurations": [
-          "Launch Web for React",
+          "Edge Launch Web for React",
+          ".NET API"
+        ]
+      },
+      {
+        "name": "Chrome -  Start API and Client",
+        "configurations": [
+          "Chrome Launch Web for React",
           ".NET API"
         ]
       }
