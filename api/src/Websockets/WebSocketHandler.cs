@@ -3,6 +3,7 @@ using System.Text;
 using System.Text.Json;
 using System.Collections.Concurrent;
 using api.AgentsChatRoom.WebSockets;
+using System.Reflection;
 
 namespace AgentOps.WebSockets
 {
@@ -84,7 +85,27 @@ namespace AgentOps.WebSockets
                     }
 
                     // Validate the message structure.
-                    if (incomingMessage == null || string.IsNullOrEmpty(incomingMessage.Action))
+                    bool hasRequiredPropertiesValue = true;
+                    // List of properties that are optional (not required to have a value)
+                    var optionalProperties = new HashSet<string> { "Content", "SubAction", "BotChat", "UserChat" };
+                    if (incomingMessage != null)
+                    {
+                        var type = incomingMessage.GetType();
+                        var properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+                        foreach (var member in properties)
+                        {
+                            var value = member.GetValue(incomingMessage);
+                            // Check if the property is null and if it is not in the list of optional properties
+                            if (value == null && !optionalProperties.Contains(member.Name))
+                            {
+                                hasRequiredPropertiesValue = false;
+                                break; // Exit the loop if a required property is null and not in the excluded list
+                            }
+                        }
+                    }
+
+                    //change the if for !propertiesHasValue
+                    if (!hasRequiredPropertiesValue || incomingMessage == null)
                     {
                         await SendErrorAsync(webSocket, "Invalid message format: 'action' is required.");
                         result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);

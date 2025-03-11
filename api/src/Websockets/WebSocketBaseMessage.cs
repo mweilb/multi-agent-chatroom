@@ -31,5 +31,15 @@ namespace AgentOps.WebSockets
         /// Gets or sets the content or payload of the message.
         /// </summary>
         public string Content { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or sets the content or payload of the message.
+        /// </summary>
+        public string BotChat { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or sets the content or payload of the message.
+        /// </summary>
+        public string UserChat { get; set; } = string.Empty;
     }
 }
