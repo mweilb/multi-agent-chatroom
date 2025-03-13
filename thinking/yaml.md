@@ -105,7 +105,7 @@ strategies:
  
 Below are two YAML examples that demonstrate similar syntax for a termination strategy and a selection strategy, with detailed explanations for clarity.
 
-### Example 1: Copy and Brand (Termination Strategy)
+### Example 1: Copy and Brand  
 
 This configuration terminates the conversation when the ArtDirector’s feedback concludes with **Approved** or **Not approved**. The filter ensures that only the most recent message is evaluated.
 
@@ -148,7 +148,7 @@ strategies:
 
 ---
 
-### Example 2: Architecture Design (Selection Strategy)
+### Example 2: Architecture Design  
 
 This configuration alternates responses among multiple roles (e.g., ProgramManager, ProductOwner, TechnicalManager, Architect, TechnicalWriter) based on the sender of the last message. A filter isolates the latest message, ensuring that the selection decision is based solely on its sender.
 
