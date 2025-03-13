@@ -67,7 +67,7 @@ namespace api.Agents.Yaml
                 responseBuilder.Append(chunk.ToString() ?? string.Empty);
                 
                 // Split the current response into the result and any thinking text.
-                (var result, var thinking) = OllamaKernelHelper.SplitContentFromThinking(responseBuilder.ToString());
+                (var result, var thinking) = OllamaHelper.SplitContentFromThinking(responseBuilder.ToString());
 
                 yield return (prompt, result, thinking);
             }

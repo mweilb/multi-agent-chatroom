@@ -182,7 +182,7 @@ namespace api.SemanticKernel.Modifications
             {
                 string currentChunk = chunk.ToString() ?? string.Empty;
                 overallResponse.Append(currentChunk);
-                (updatedPlainText, updatedThinkingText) = OllamaKernelHelper.SplitContentFromThinking(overallResponse.ToString());
+                (updatedPlainText, updatedThinkingText) = OllamaHelper.SplitContentFromThinking(overallResponse.ToString());
 
                 yield return (prompt, updatedPlainText, updatedThinkingText);
             }

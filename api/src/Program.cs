@@ -1,7 +1,8 @@
 using AgentOps.WebSockets;
-using api.SemanticKernel.Helpers;
-using api.AgentsChatRoom.Rooms;
 using api.Agents.Yaml;
+using api.AgentsChatRoom.Rooms;
+using api.SemanticKernel.Helpers;
+using Microsoft.SemanticKernel;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,10 +29,17 @@ var configBuilder = new ConfigurationBuilder()
 
 IConfiguration configuration = configBuilder.Build();
 
+
+// Create the kernel builder for initializing services.
+var kernelBuilder = Kernel.CreateBuilder();
+
 // Initialize KernelHandler
-//var kernelHandler = new AzureKernelHelper(configuration);
-var kernelHandler = new OllamaKernelHelper(configuration);
-var kernel = kernelHandler.GetKernel();
+//KernelHelper.SetupAzure(kernelBuilder, configuration);
+KernelHelper.SetupOllama(kernelBuilder, configuration);
+KernelHelper.SetupPinecone(kernelBuilder, configuration);
+
+// Build the kernel.
+var kernel = kernelBuilder.Build();
 
 // Enable CORS
 app.UseCors("AllowFrontend");

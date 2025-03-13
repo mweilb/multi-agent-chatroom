@@ -1,4 +1,6 @@
 using Microsoft.SemanticKernel;
+ 
+#pragma warning disable SKEXP0020 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 
 namespace api.SemanticKernel.Helpers
 {
@@ -6,33 +8,9 @@ namespace api.SemanticKernel.Helpers
     /// Helper class for configuring and building an Ollama-based Semantic Kernel.
     /// It initializes the kernel with the Ollama Chat Completion service.
     /// </summary>
-    public class OllamaKernelHelper
+    public class OllamaHelper
     {
-        private readonly Kernel _kernel;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="OllamaKernelHelper"/> class.
-        /// Configures the kernel with Ollama Chat Completion service using configuration settings.
-        /// </summary>
-        /// <param name="configuration">The configuration containing Ollama endpoint and model details.</param>
-        public OllamaKernelHelper(IConfiguration configuration)
-        {
-            // Load Ollama endpoint and model from configuration, with fallback defaults.
-            var ollamaEndpoint = configuration["OLLAMA_ENDPOINT"] ?? "http://localhost:11434";
-            var modelId = configuration["OLLAMA_MODEL"] ?? "deepseek-r1";
-
-            // Create the kernel builder.
-            var kernelBuilder = Kernel.CreateBuilder();
-            var ollamaUri = new Uri(ollamaEndpoint);
-
-            // Add Ollama Chat Completion service to the kernel.
-#pragma warning disable SKEXP0070
-            kernelBuilder.AddOllamaChatCompletion(modelId, ollamaUri);
-#pragma warning restore SKEXP0070
-
-            // Build the kernel.
-            _kernel = kernelBuilder.Build();
-        }
+       
 
         /// <summary>
         /// Removes any text between <think> and </think> (including the tags) from the provided content.
@@ -99,14 +77,7 @@ namespace api.SemanticKernel.Helpers
                 return (beforeThink, thinkSection);
             }
         }
-
-        /// <summary>
-        /// Gets the configured instance of the Semantic Kernel.
-        /// </summary>
-        /// <returns>The configured <see cref="Kernel"/> instance.</returns>
-        public Kernel GetKernel()
-        {
-            return _kernel;
-        }
+ 
     }
 }
+#pragma warning restore SKEXP0020 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.

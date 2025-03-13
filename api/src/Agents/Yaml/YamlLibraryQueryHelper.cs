@@ -56,7 +56,7 @@ namespace api.Agents.Yaml
             string rawResponse = promptResult?.GetValue<string>() ?? string.Empty;
 
             // Split the raw response into the reframed result and any additional thinking text.
-            (string reframedResult, string reframedThinking) = OllamaKernelHelper.SplitContentFromThinking(rawResponse);
+            (string reframedResult, string reframedThinking) = OllamaHelper.SplitContentFromThinking(rawResponse);
 
             // Yield the final reframed response.
             yield return (reframedResult, string.Empty, reframedThinking);

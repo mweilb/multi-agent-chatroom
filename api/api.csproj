@@ -13,6 +13,7 @@
     <PackageReference Include="Microsoft.SemanticKernel.Connectors.AzureAISearch" Version="1.37.0-preview" />
     <PackageReference Include="Microsoft.SemanticKernel.Connectors.AzureOpenAI" Version="1.37.0" />
     <PackageReference Include="Microsoft.SemanticKernel.Connectors.Ollama" Version="1.37.0-alpha" />
+    <PackageReference Include="Microsoft.SemanticKernel.Connectors.Pinecone" Version="1.41.0-preview" />
     <PackageReference Include="YamlDotNet" Version="16.3.0" />
 
   </ItemGroup>

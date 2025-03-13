@@ -63,7 +63,7 @@ namespace api.Agents.Yaml
                 // Escape any embedded quotes in the author name.
                 var author = (message.AuthorName ?? "User").Replace("\"", "\\\"");
                 // Clean the message content by removing any unwanted "thinking" parts and escape quotes.
-                var messageText = OllamaKernelHelper.RemoveThinkContent(message.Content ?? "").Replace("\"", "\\\"");
+                var messageText = OllamaHelper.RemoveThinkContent(message.Content ?? "").Replace("\"", "\\\"");
                 
                 // Build a JSON object string.
                 if (shouldRemoveContent)
@@ -107,7 +107,7 @@ namespace api.Agents.Yaml
             {
                 responseBuilder.Append(chunk.ToString() ?? string.Empty);
                 // Split the response into the filtered JSON result and the associated "thinking" text.
-                (var filteredJson, var thinkingText) = OllamaKernelHelper.SplitContentFromThinking(responseBuilder.ToString());
+                (var filteredJson, var thinkingText) = OllamaHelper.SplitContentFromThinking(responseBuilder.ToString());
                 yield return (fullPrompt, filteredJson, thinkingText);
             }
         }
