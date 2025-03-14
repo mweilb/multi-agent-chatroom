@@ -91,7 +91,22 @@ ollama --version
 
 ollama pull deepseek-r1
 
-5. Start API and Client
+5. Optional Install Local Vector DB
+
+ Steps: 
+	1. Download Docker
+     https://docs.docker.com/desktop/setup/install/mac-install/
+
+     For Qdrant, https://qdrant.tech/documentation/
+     > docker pull qdrant/qdrant
+
+     For Pinecone, https://docs.pinecone.io/guides/operations/local-development
+     > docker pull ghcr.io/pinecone-io/pinecone-index:latest
+
+     In the root directory goto vectordb and run
+     > .\StartVectorDB.sh <qdrant|pinecone>
+
+6. Start API and Client
 
 Steps
 
@@ -118,6 +133,8 @@ Final Summary
 	•	Download from code.visualstudio.com, install, and add essential .NET extensions.
 	4.	Ollama with DeepSeek (r1 Release):
 	•	Install Ollama via the macOS installer, verify with ollama --version, and pull the model with ollama pull deepseek-r1.
+
+
 	5.	Start API and Client:
 	•	Run your API (e.g., using dotnet run) and start the client using npm start.
 

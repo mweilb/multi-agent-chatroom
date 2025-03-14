@@ -92,6 +92,19 @@ https://docs.docker.com/engine/install/
 
 2. Install qdrant/qdrant  
 docker pull qdrant/qdrant
- 
 
- 
+### Pinecone Setup
+1. Setup Docker
+https://docs.docker.com/engine/install/
+
+2. Install pinecone 
+https://docs.pinecone.io/guides/operations/local-development
+docker pull ghcr.io/pinecone-io/pinecone-index:latest
+
+### Start your vector DB
+
+ There is script to help you start the pinecone or qdrant solution
+ in VectorDB folder
+   >startVectorDB <qdrant|pipecone> 
+
+ Will start the right version with the correct default values

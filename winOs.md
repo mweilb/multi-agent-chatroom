@@ -143,9 +143,23 @@ Below is a complete set of installation instructions—mirroring the macOS guide
 4. **Ollama with DeepSeek (r1 Release):**  
    •	Download the Windows installer (if available) from [ollama.com/download](https://ollama.com/download), install, verify with `ollama --version`, and pull the model with `ollama pull deepseek-r1`.  
    > *If Ollama is not supported on Windows yet, refer to the vendor for further guidance.*
+ 
+5. **Optional Install a local Vector DB:**
+   • Download Docker
+     https://docs.docker.com/desktop/setup/install/windows-install/
 
-5. **Start API and Client:**  
+     For Qdrant, https://qdrant.tech/documentation/
+     > docker pull qdrant/qdrant
+
+     For Pinecone, https://docs.pinecone.io/guides/operations/local-development
+     > docker pull ghcr.io/pinecone-io/pinecone-index:latest
+
+     In the root directory goto vectordb and run
+     Run StartVectorDB.ps1 <qdrant|pinecone>
+
+6. **Start API and Client:**  
    •	Run your API (e.g., using `dotnet run --project ApiProject`) and start the client using `npm start`.
+
 
 ---
 
