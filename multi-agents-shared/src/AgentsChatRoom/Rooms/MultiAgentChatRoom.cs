@@ -5,8 +5,9 @@ using Microsoft.SemanticKernel.ChatCompletion;
 using api.SemanticKernel.Modifications;
 using api.AgentsChatRoom.WebSockets;
 using api.AgentsChatRoom.AgentRegistry;
- 
- 
+using Microsoft.Extensions.Logging;
+
+
 #pragma warning disable SKEXP0110
 
 namespace api.AgentsChatRoom.Rooms

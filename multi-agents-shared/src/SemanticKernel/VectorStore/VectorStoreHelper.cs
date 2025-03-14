@@ -1,4 +1,5 @@
 ﻿using api.src.SemanticKernel.VectorStore.Documents;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.SemanticKernel;
 
 namespace api.src.SemanticKernel.VectorStore

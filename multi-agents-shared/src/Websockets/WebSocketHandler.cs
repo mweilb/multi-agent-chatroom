@@ -24,36 +24,14 @@ namespace AgentOps.WebSockets
             commandHandlers[action] = commandHandler;
         }
 
-        /// <summary>
-        /// Configures WebSocket endpoints for the application.
-        /// </summary>
-        /// <param name="app">The web application instance.</param>
-        public void ConfigureWebSocketEndpoints(WebApplication app)
-        {
-            app.UseWebSockets();
-
-            // Map the "/ws" endpoint for WebSocket connections.
-            app.Map("/ws", async context =>
-            {
-                if (context.WebSockets.IsWebSocketRequest)
-                {
-                    using var webSocket = await context.WebSockets.AcceptWebSocketAsync();
-                    Console.WriteLine("WebSocket connection established");
-                    await HandleRequestAsync(webSocket);
-                }
-                else
-                {
-                    context.Response.StatusCode = 400;
-                }
-            });
-        }
+       
 
         /// <summary>
         /// Listens for incoming WebSocket messages and dispatches them to the appropriate command handler.
         /// </summary>
         /// <param name="webSocket">The WebSocket connection.</param>
         /// <returns>A task that represents the asynchronous operation.</returns>
-        private async Task HandleRequestAsync(WebSocket webSocket)
+        public async Task HandleRequestAsync(WebSocket webSocket)
         {
             // Buffer for receiving incoming messages.
             var buffer = new byte[1024 * 4];

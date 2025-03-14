@@ -5,6 +5,7 @@ using AgentOps.WebSockets;
 using api.AgentsChatRoom.AgentRegistry;
 using api.AgentsChatRoom.WebSockets;
 using api.SemanticKernel.Modifications;
+using Microsoft.Extensions.Logging;
 using Microsoft.SemanticKernel;
 
 namespace api.AgentsChatRoom.Rooms
@@ -33,7 +34,7 @@ namespace api.AgentsChatRoom.Rooms
         /// <param name="room">The multi-agent chat room room to add.</param>
         /// <param name="kernel">The Semantic Kernel instance for agent configuration.</param>
         /// <returns>True if the room was successfully added; otherwise, false.</returns>
-        public bool AddAgentChatRoom(IAgentRegistry registry, IMultiAgentChatRoom room, Kernel kernel)
+        public bool AddAgentChatRoom(IAgentRegistry registry, IMultiAgentChatRoom room, Kernel kernel, ILoggerFactory loggerFactory)
         {
             // 1. Validate the provided registry and room.
             if (registry == null || room == null)
@@ -57,7 +58,6 @@ namespace api.AgentsChatRoom.Rooms
             );
 
             // 4. Create a logger using LoggerFactory (this example logs to the console).
-            var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
             var logger = loggerFactory.CreateLogger<IMultiAgentChatRoom>();
 
             // 5. Initialize the room with the registry, chat room, and logger.

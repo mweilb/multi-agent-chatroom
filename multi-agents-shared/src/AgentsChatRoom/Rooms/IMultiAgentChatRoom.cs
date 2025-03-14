@@ -1,6 +1,7 @@
 ﻿using AgentOps.WebSockets;
 using api.AgentsChatRoom.AgentRegistry;
 using api.SemanticKernel.Modifications;
+using Microsoft.Extensions.Logging;
 using Microsoft.SemanticKernel;
 using System.Net.WebSockets;
 

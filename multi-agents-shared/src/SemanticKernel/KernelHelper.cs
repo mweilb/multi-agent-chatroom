@@ -2,6 +2,8 @@
 using api.src.SemanticKernel.VectorStore.Documents;
 using Azure;
 using Azure.Core;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Connectors.Pinecone;
 using Microsoft.SemanticKernel.Connectors.Qdrant;

@@ -67,8 +67,10 @@ foreach (var yamlFilePath in yamlFiles)
     // Create the agent handler using the YAML file and the kernel
     var agentHandler = new YamlAgentHandler(yamlFilePath, kernel);
 
+    var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
+
     // Register the agent chat room with the handler manager
-    agentHandlerManager.AddAgentChatRoom(registry, agentHandler, kernel);
+    agentHandlerManager.AddAgentChatRoom(registry, agentHandler, kernel, loggerFactory);
 }
 //can also do code version..
 //agentHandlerManager.AddAgentChatRoom(new ExampleAgentRegistry(), new ExampleAgentHandler(), kernel);
@@ -76,9 +78,24 @@ foreach (var yamlFilePath in yamlFiles)
 // You can add more handlers here if needed.
 agentHandlerManager.RegisterChatRooms(webSocketHandler, kernel);
 
-// Configure WebSocket endpoints
-webSocketHandler.ConfigureWebSocketEndpoints(app);
+app.UseWebSockets();
 
+// Map the "/ws" endpoint for WebSocket connections.
+app.Map("/ws", async context =>
+{
+    if (context.WebSockets.IsWebSocketRequest)
+    {
+        using var webSocket = await context.WebSockets.AcceptWebSocketAsync();
+        Console.WriteLine("WebSocket connection established");
+        await webSocketHandler.HandleRequestAsync(webSocket);
+    }
+    else
+    {
+        context.Response.StatusCode = 400;
+    }
+});
+ 
+ 
 app.Run();
 
  
