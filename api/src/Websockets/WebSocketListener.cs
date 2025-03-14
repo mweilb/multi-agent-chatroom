@@ -1,17 +1,17 @@
 ﻿using AgentOps.WebSockets;
 using OllamaSharp.Models.Chat;
-using api.src.Agents; // ✅ Use correct namespace
+using api.src.Agents; 
 using System.Collections.Concurrent;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Microsoft.SemanticKernel.Connectors.Pinecone; // ✅ Add correct Pinecone reference
+using Microsoft.SemanticKernel.Connectors.Pinecone; 
 
 namespace api.src.Websockets
 {
     public class WebSocketListener
     {
         private readonly Dictionary<(string idUser, string TransactionId), List<WebSocketBaseMessage>> messages = new();
-        private readonly SKAgents _skAgent; // ✅ Use correct SKAgents class
+        private readonly SKAgents _skAgent; 
 
         public WebSocketListener(WebSocketHandler handler, SKAgents skAgent)
         {
@@ -55,7 +55,7 @@ namespace api.src.Websockets
                 // ✅ Store processed data in Pinecone
                 var pineconeRecord = new PineconeVectorStoreRecord(
                     id: $"{incomingMessage.UserId}-{incomingMessage.TransactionId}",
-                    vector: processedResponse.Vector, // Make sure `ProcessMessageAsync` returns vector
+                    vector: processedResponse.Vector, 
                     metadata: new Dictionary<string, object>
                     {
                         { "userId", incomingMessage.UserId },
