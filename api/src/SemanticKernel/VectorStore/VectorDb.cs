@@ -1,11 +1,10 @@
- 
 using Azure;
 using Azure.Search.Documents;
 using Azure.Search.Documents.Indexes;
 using Azure.Search.Documents.Indexes.Models;
 using Azure.Search.Documents.Models;
- 
-namespace AgentOps.VectorDb
+
+namespace api.src.SemanticKernel.VectorStore
 {
     /// <summary>
     /// A generic class for managing a vector database backed by Azure Cognitive Search.
@@ -303,7 +302,7 @@ namespace AgentOps.VectorDb
 
                 // Select document, caption, and answer
                 var results = response.GetResults().Select(result => (
-                    Document: result.Document,
+                    result.Document,
                     Caption: result.SemanticSearch.Captions.FirstOrDefault()?.Text ?? "No caption available", // Provide a default if null
                     Score: result.Score ?? 0.0
                 )).ToList();

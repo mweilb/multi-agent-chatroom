@@ -31,8 +31,8 @@
         "url": "http://localhost:3000",
         "webRoot": "${workspaceFolder}/client/src",
         "userDataDir": true,
-        
-      }
+      },
+     
     ],
     "compounds": [
       {

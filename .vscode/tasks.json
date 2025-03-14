@@ -5,10 +5,33 @@
         "label": "Init Client",
         "type": "shell",
         "command": "npm install",
+        "runOptions": {
+          "runOn": "folderOpen"
+        },
         "options": {
           "cwd": "${workspaceFolder}/client"
         },
         "problemMatcher": []
+      },
+      {
+        "label": "Run Qdrant with local memory",
+        "type": "shell",
+        "command": "if [ -z \"$(docker ps -aq -f name=qdrant-multi-agents)\" ]; then docker run --name qdrant-multi-agents -d -p 6335:6335 -v ${workspaceFolder}/vectordb/qdrant/.qdrant_data:/qdrant/storage qdrant/qdrant; else docker start qdrant-multi-agents; fi",
+        "windows": {
+        "command": "powershell",
+        "args": [
+          "-NoProfile",
+          "-Command",
+          "& { $id = docker ps -aq -f name=qdrant-multi-agents; if ([string]::IsNullOrWhiteSpace($id)) { docker run --name qdrant-multi-agents -d -p 6335:6335 -v '${workspaceFolder}/vectordb/qdrant/.qdrant_data:/qdrant/storage' qdrant/qdrant } else { docker start qdrant-multi-agents } }"
+        ]
+      },
+        "runOptions": {
+          "runOn": "folderOpen"
+        },
+        "options": {
+          "cwd": "${workspaceFolder}/vectordb/qdrant"
+        },
+        "problemMatcher":  []
       },
       {
         "label": "build-api",
@@ -36,7 +59,20 @@
         },
         "dependsOn": ["Init Client"],
          
-        "problemMatcher": []
+        "problemMatcher": {
+    "owner": "custom",
+    "pattern": {
+      "regexp": ".",
+      "file": 1,
+      "location": 2,
+      "message": 3
+    },
+    "background": {
+      "activeOnStart": true,
+      "beginsPattern": "^.*docker run.*$",
+      "endsPattern": "^.*Qdrant HTTP listening on 6335.*$"
+    }
+  }
     }
        
     ]

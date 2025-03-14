@@ -85,6 +85,13 @@ This system integrates with **Azure Cognitive Search** and **Azure OpenAI** serv
 
 Ensure that the `AzureKernelHelper` class is properly configured with the environment variables or configuration file details to allow the system to utilize **Azure OpenAI** and **Cognitive Search**.
 
+### Quarant setup
+
+1. Setup Docker
+https://docs.docker.com/engine/install/
+
+2. Install qdrant/qdrant  
+docker pull qdrant/qdrant
  
 
  

@@ -1,6 +1,10 @@
- 
+
+using api.src.SemanticKernel.VectorStore.Documents;
+using Azure;
+using Azure.Core;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Connectors.Pinecone;
+using Microsoft.SemanticKernel.Connectors.Qdrant;
 using static OllamaSharp.OllamaApiClient;
 
 namespace api.SemanticKernel.Helpers
@@ -88,6 +92,51 @@ namespace api.SemanticKernel.Helpers
    
             // Create a Pinecone client and memory store.
             builder.AddPineconeVectorStore(pineconeApiKey);
+
+            // Register the data uploader.
+            builder.Services.AddSingleton<DataUploader>();
+        }
+
+        /// <summary>
+        /// Configures the kernel with Qdrant as the memory store.
+        /// </summary>
+        /// <param name="builder">The kernel builder.</param>
+        /// <param name="configuration">The configuration containing Qdrant settings.</param>
+        public static void SetupQdrant(IKernelBuilder builder, IConfiguration configuration)
+        {
+            // Load Qdrant settings from configuration with sensible defaults.
+            var qdrantEndpoint = configuration["QDRANT_ENDPOINT"] ?? "http://localhost:6335";
+
+            // Parse the endpoint to extract host and port.
+            var uri = new Uri(qdrantEndpoint);
+            string host = uri.Host;
+            int port = uri.Port;
+
+            // Add the Qdrant memory store to the kernel.
+            // This method expects the Qdrant endpoint as a Uri and the index name as a string.
+            builder.AddQdrantVectorStore(host,port);
+
+            // Register the data uploader.
+            builder.Services.AddSingleton<DataUploader>();
+        }
+
+        public static void SetupAzureSearch(IKernelBuilder builder, IConfiguration configuration)
+        {
+            // Load Azure Search settings from configuration.
+            var azureSearchEndpoint = configuration["AZURE_SEARCH_ENDPOINT"] ?? "https://your-search-service.search.windows.net";
+            var azureSearchKey = configuration["AZURE_SEARCH_KEY"] ?? "your-azure-search-key";
+            var indexName = configuration["AZURE_SEARCH_INDEX"] ?? "pdf-docs";
+
+            // Create a TokenCredential (using DefaultAzureCredential as an example).
+            var tokenCredential = new AzureKeyCredential(azureSearchKey);
+
+            // Add Azure Cognitive Search vector store using the TokenCredential.
+
+            // Configure Azure Cognitive Search vector store.
+            builder.AddAzureAISearchVectorStore(new Uri(azureSearchEndpoint), tokenCredential);
+
+            // Register the data uploader.
+            builder.Services.AddSingleton<DataUploader>();
         }
     }
 }
