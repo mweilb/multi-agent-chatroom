@@ -22,7 +22,7 @@ namespace api.src.Agents
         {
             Console.WriteLine($"Processing message: {message}");
 
-            // ✅ Using the actual WebSocket message instead of a hardcoded prompt
+            //Message from WebSocketListener
             var response = await _kernel.InvokeAsync<string>(message);
 
             return new MemoryRecord(
