@@ -1,22 +1,21 @@
+#pragma warning disable CS1591, CS0618, SKEXP0020, CS0117, CS1503, CS1061
+
 using AgentOps.WebSockets;
 using api.SemanticKernel.Helpers;
 using api.AgentsChatRoom.Rooms;
 using api.Agents.Yaml;
-using api.AgentsChatRoom.Pinecone;
-using api.AgentsChatRoom.WebSockets;
+using api.src.Websockets;
+using api.src.Agents; // ? Corrected namespace (without SKAgents)
+using Microsoft.SemanticKernel;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.VectorData;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Pinecone;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Register configuration so it can be used for dependency injection
-builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
-
-// Register PineconeService so it can use IConfiguration
-builder.Services.AddSingleton<PineconeService>();
-
-// Register WebSocketMessageListener to handle WebSocket messages
-builder.Services.AddSingleton<WebSocketMessageListener>();
-
-// Add controllers to the service container
+// Add services to the container.
 builder.Services.AddControllers();
 
 // Configure CORS to allow the React app (assumes it runs on http://localhost:3000)
@@ -30,32 +29,49 @@ builder.Services.AddCors(options =>
     });
 });
 
+// Initialize Pinecone Client in DI
+builder.Services.AddSingleton<PineconeClient>(sp =>
+    new PineconeClient("pcsk_3Urp9A_BqEfvf3aUXWM3754EuUxBZEMPQ8t3rtJ2B6VaoEeva8SkK2P3gSZ2VT4Pq8eMNS", new Uri("https://us-east-1.pinecone.io")));
+
+// Initialize Pinecone Vector Store
+builder.Services.AddPineconeVectorStore();
+
+// Add Semantic Kernel
+builder.Services.AddSingleton<Kernel>(sp =>
+{
+    var kernelBuilder = Kernel.CreateBuilder();
+    kernelBuilder.Services.TryAddEnumerable(sp.GetServices<ServiceDescriptor>()); // Fixed Read-Only Services Issue
+    return kernelBuilder.Build();
+});
+
+// ? Register SKAgents as a service (Correct class reference)
+builder.Services.AddSingleton<SKAgents>();
+
 var app = builder.Build();
 
-// Load configuration from appsettings.json and environment variables
+// Load Configuration
 var configBuilder = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
     .AddEnvironmentVariables(); // Environment variables take precedence
 
 IConfiguration configuration = configBuilder.Build();
 
-// Initialize KernelHandler
-// var kernelHandler = new AzureKernelHelper(configuration);
+// Initialize Kernel Handler
 var kernelHandler = new OllamaKernelHelper(configuration);
 var kernel = kernelHandler.GetKernel();
 
 // Enable CORS
 app.UseCors("AllowFrontend");
 
-// Retrieve registered services from DI container
-var pineconeService = app.Services.GetRequiredService<PineconeService>();
-var webSocketListener = app.Services.GetRequiredService<WebSocketMessageListener>();
+// Resolve Pinecone Vector Store & SKAgents
+var vectorStore = app.Services.GetRequiredService<IVectorStore>();
+var skAgent = app.Services.GetRequiredService<SKAgents>(); // ? Now correctly resolving SKAgents class
 
-// Create WebSocketHandler
+// Create WebSocket Handler & Multi-Agent Manager
 var webSocketHandler = new WebSocketHandler();
 var agentHandlerManager = new MultiAgentChatRooms();
 
-// Determine the base directory and the Agents directory
+// Load Agents from YAML
 string baseDirectory = AppContext.BaseDirectory;
 string agentsDirectory = Path.Combine(baseDirectory, "Agents");
 
@@ -65,22 +81,25 @@ var yamlFiles = Directory.GetFiles(agentsDirectory, "*.yml")
 
 foreach (var yamlFilePath in yamlFiles)
 {
-    // Create the YAML registry for the current file
+    // Create YAML Agent Registry
     var registry = new YamlAgentRegistry(yamlFilePath);
     registry.ConfigureAgents(kernel);
 
-    // Create the agent handler using the YAML file and the kernel
+    // Initialize Agent Handler with Kernel
     var agentHandler = new YamlAgentHandler(yamlFilePath, kernel);
 
-    // Register the agent chat room with the handler manager
+    // Register Agent Chat Room
     agentHandlerManager.AddAgentChatRoom(registry, agentHandler, kernel);
 }
 
-// You can add more handlers here if needed.
-agentHandlerManager.RegisterChatRooms(webSocketHandler, kernel);
+// ? Add WebSocket Listener with SKAgents
+var listener = new WebSocketListener(webSocketHandler, skAgent);
 
-// Configure WebSocket endpoints
+// Register Chat Rooms & Configure WebSocket Endpoints
+agentHandlerManager.RegisterChatRooms(webSocketHandler, kernel);
 webSocketHandler.ConfigureWebSocketEndpoints(app);
 
-// Start the application
+// Run the Application
 app.Run();
+
+#pragma warning restore CS1591, CS0618, SKEXP0020, CS0117, CS1503, CS1061

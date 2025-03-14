@@ -1,52 +1,79 @@
 ﻿using AgentOps.WebSockets;
 using OllamaSharp.Models.Chat;
+using api.src.Agents; // ✅ Use correct namespace
 using System.Collections.Concurrent;
 using System.Text.Json;
+using System.Threading.Tasks;
+using Microsoft.SemanticKernel.Connectors.Pinecone; // ✅ Add correct Pinecone reference
 
 namespace api.src.Websockets
 {
     public class WebSocketListener
     {
-        private readonly Dictionary<(string idUser, string TransactionId), List<WebSocketBaseMessage>> messages = new ();
-        public WebSocketListener(WebSocketHandler handler)
+        private readonly Dictionary<(string idUser, string TransactionId), List<WebSocketBaseMessage>> messages = new();
+        private readonly SKAgents _skAgent; // ✅ Use correct SKAgents class
+
+        public WebSocketListener(WebSocketHandler handler, SKAgents skAgent)
         {
-            // Subscribe to the OnMessageReceived event
+            _skAgent = skAgent ?? throw new ArgumentNullException(nameof(skAgent));
             handler.OnMessageReceived += OnMessageReceived;
         }
 
-        private void OnMessageReceived(string message)
+        private async void OnMessageReceived(string message)
         {
-            Console.WriteLine($"Message From Wss: {message}");
+            Console.WriteLine($"Message From WebSocket: {message}");
             try
             {
-                // Deserialize the JSON into a WebSocketBaseMessage.
+                // ✅ Deserialize JSON safely
                 var incomingMessage = JsonSerializer.Deserialize<WebSocketBaseMessage>(message);
-                if (incomingMessage != null)
+                if (incomingMessage == null)
                 {
-                    var identifier = (incomingMessage.UserId, incomingMessage.TransactionId);
-                    if (messages.ContainsKey((incomingMessage.UserId, incomingMessage.TransactionId)))
-                        {
-                        var userMessagesList = messages[identifier];
-                        userMessagesList.Add(incomingMessage);
-                        messages.Add((incomingMessage.UserId, incomingMessage.TransactionId), userMessagesList);
-                        Console.WriteLine("Values added to dictionary");
-                    }
-                    else
-                    {
-                       messages[identifier] = new List<WebSocketBaseMessage> {incomingMessage};
-                    }
+                    Console.WriteLine("Received empty or malformed message.");
+                    return;
                 }
-                //foreach (var _message in messages.Keys)
-                //{
-                //    Console.WriteLine($"Key: {_message}, Value: \n");
-                //    foreach (var key in messages[_message])
-                //    {
-                //        Console.WriteLine($"{key}, ");
-                //    }
-                //}
-                //The part where you send it to the semantic kernel
+
+                var identifier = (incomingMessage.UserId, incomingMessage.TransactionId);
+
+                // ✅ Store messages in dictionary safely
+                if (!messages.ContainsKey(identifier))
+                {
+                    messages[identifier] = new List<WebSocketBaseMessage>();
+                }
+                messages[identifier].Add(incomingMessage);
+                Console.WriteLine("Values added to dictionary");
+
+                // ✅ Ensure message has content
+                if (string.IsNullOrWhiteSpace(incomingMessage.Content))
+                {
+                    Console.WriteLine("Message content is empty, skipping processing.");
+                    return;
+                }
+
+                // ✅ Send to SKAgents for processing
+                var processedResponse = await _skAgent.ProcessMessageAsync(incomingMessage.Content);
+
+                // ✅ Store processed data in Pinecone
+                var pineconeRecord = new PineconeVectorStoreRecord(
+                    id: $"{incomingMessage.UserId}-{incomingMessage.TransactionId}",
+                    vector: processedResponse.Vector, // Make sure `ProcessMessageAsync` returns vector
+                    metadata: new Dictionary<string, object>
+                    {
+                        { "userId", incomingMessage.UserId },
+                        { "transactionId", incomingMessage.TransactionId },
+                        { "content", processedResponse.Content }
+                    }
+                );
+
+                await _skAgent.StoreInPineconeAsync(pineconeRecord);
             }
-            catch (Exception ex) { Console.WriteLine($" Error deserializing the message: {ex.Message}"); }
+            catch (JsonException jsonEx)
+            {
+                Console.WriteLine($"JSON Deserialization Error: {jsonEx.Message}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Unexpected Error: {ex.Message}");
+            }
         }
     }
 }

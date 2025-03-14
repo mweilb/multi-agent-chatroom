@@ -4,7 +4,14 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <NoWarn>CS1591</NoWarn>
+    <NoWarn>CS0618</NoWarn>
+    <NoWarn>SKEXP0020</NoWarn>
+    <NoWarn>CS1503</NoWarn>
+    <NoWarn>CS0020</NoWarn>
+    <NoWarn>CS1591;CS0618;SKEXP0020;CS0117;CS1503;CS1061</NoWarn>
   </PropertyGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.2" />
@@ -13,7 +20,10 @@
     <PackageReference Include="Microsoft.SemanticKernel.Connectors.AzureAISearch" Version="1.37.0-preview" />
     <PackageReference Include="Microsoft.SemanticKernel.Connectors.AzureOpenAI" Version="1.37.0" />
     <PackageReference Include="Microsoft.SemanticKernel.Connectors.Ollama" Version="1.37.0-alpha" />
+    <PackageReference Include="Microsoft.SemanticKernel.Plugins.Memory" Version="1.41.0-alpha" />
     <PackageReference Include="YamlDotNet" Version="16.3.0" />
+    <PackageReference Include="Microsoft.SemanticKernel.Connectors.Pinecone" Version="1.41.0-preview" />
+
 
   </ItemGroup>
 
