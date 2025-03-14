@@ -20,7 +20,11 @@ namespace api.src.Agents
 
         public async Task<MemoryRecord> ProcessMessageAsync(string message)
         {
-            var response = await _kernel.InvokeAsync<string>("Your-Prompt");
+            Console.WriteLine($"Processing message: {message}");
+
+            // ✅ Using the actual WebSocket message instead of a hardcoded prompt
+            var response = await _kernel.InvokeAsync<string>(message);
+
             return new MemoryRecord(
                 id: Guid.NewGuid().ToString(),
                 vector: new List<float> { 0.1f, 0.2f, 0.3f, 0.4f }.ToArray(), // Example vector
